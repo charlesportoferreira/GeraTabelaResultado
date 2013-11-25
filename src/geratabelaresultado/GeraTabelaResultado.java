@@ -49,7 +49,7 @@ public class GeraTabelaResultado {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Classificador").append(" | ").append("Grams").append(" | ").append("Acertos").append(" | ").append("%Acertos").append(" | ").append("Erros").append(" | ").append("%Erros").append("\n");
+        sb.append("Classificador").append(" | ").append("Grams").append(" | ").append("%Acertos").append(" | ").append("%Erros").append(" | ").append("Acertos").append(" | ").append("Erros").append("\n");
         for (Resultado resultado : resultados) {
             sb.append(resultado.toString()).append("\n");
         }

@@ -68,7 +68,7 @@ public class Resultado {
 
     @Override
     public String toString() {
-        return getNomeClassificador() + " | " + getNomeTeste() + " | " + getQtdeAcertos() + " | " + getPorcentagemAcertos() + " | " + getQtdeErros() + " | " + getPorcentagemErros();
+        return getNomeClassificador() + " | " + getNomeTeste() + " | " + getPorcentagemAcertos() + " | " + getPorcentagemErros() + " | " + getQtdeAcertos() + " | " + getQtdeErros();
     }
 
 }
