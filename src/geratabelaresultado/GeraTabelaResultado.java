@@ -31,7 +31,7 @@ public class GeraTabelaResultado {
         String diretorio = System.getProperty("user.dir");
         //List<String> textos = fileTreePrinter(new File(diretorio), 0);
         fileTreePrinter(new File(diretorio), 0);
-        System.out.println("*******************************************");
+        System.out.println("**********************************************");
         for (int i = 0; i < fileNames.size(); i++) {
             if (fileNames.get(i).contains(".arff.txt")) {
                 Resultado res = new Resultado();
