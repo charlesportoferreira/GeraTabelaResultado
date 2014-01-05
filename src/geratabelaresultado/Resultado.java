@@ -5,6 +5,9 @@
  */
 package geratabelaresultado;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author charleshenriqueportoferreira
@@ -17,6 +20,28 @@ public class Resultado {
     private int qtdeErros;
     private String porcentagemErros;
     private String porcentagemAcertos;
+    private List<Fold> folds;
+
+    public Resultado() {
+        this.folds = new ArrayList<>();
+    }
+
+    public List<Fold> getFolds() {
+        return folds;
+    }
+
+    public void setFolds(List<Fold> folds) {
+        this.folds = folds;
+        calculaPorcentagemAcertosTotal();
+    }
+
+    public void addFold(Fold fold) {
+        this.folds.add(fold);
+    }
+
+    public void addAll(List<Fold> folds) {
+        this.folds.addAll(folds);
+    }
 
     public String getNomeClassificador() {
         return nomeClassificador;
@@ -68,7 +93,28 @@ public class Resultado {
 
     @Override
     public String toString() {
-        return getNomeClassificador() + " | " + getNomeTeste() + " | " + getPorcentagemAcertos() + " | " + getPorcentagemErros() + " | " + getQtdeAcertos() + " | " + getQtdeErros();
+        //return getNomeClassificador() + " | " + getNomeTeste() + " | " + getPorcentagemAcertos() + " | " + getPorcentagemErros() + " | " + getQtdeAcertos() + " | " + getQtdeErros();
+        StringBuilder resultado = new StringBuilder(getNomeClassificador() + " | " + getNomeTeste());
+
+        for (Fold fold : folds) {
+            resultado.append(" | ").append(fold.getAcertos()).append(" | ")
+                    .append(fold.getNrIntancias()).append(" | ").append("-");
+
+        }
+        resultado.append(" | ").append(porcentagemAcertos);
+        return resultado.toString();
+    }
+
+    private void calculaPorcentagemAcertosTotal() {
+        double acertosTotais = 0;
+        double nrInstanciasTotais = 0;
+        for (Fold fold : folds) {
+            acertosTotais += fold.getAcertos();
+            nrInstanciasTotais += fold.getNrIntancias();
+        }
+
+        porcentagemAcertos = String.valueOf((acertosTotais * 100) / nrInstanciasTotais);
+
     }
 
 }

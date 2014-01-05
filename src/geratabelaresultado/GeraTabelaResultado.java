@@ -38,7 +38,9 @@ public class GeraTabelaResultado {
                 res.setNomeClassificador(fileNames.get(i).split("_")[0]);
                 res.setNomeTeste(fileNames.get(i).split("_")[1].replace(".arff.txt", ""));
                 try {
-                    res = getResultadosArquivo(filePaths.get(i), res);
+                    //res = getResultadosArquivo(filePaths.get(i), res);
+                    res = getPredictions(filePaths.get(i), res);
+                    int a = 2;
                 } catch (IOException ex) {
                     Logger.getLogger(GeraTabelaResultado.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -49,10 +51,17 @@ public class GeraTabelaResultado {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Classificador").append(" | ").append("Grams").append(" | ").append("%Acertos").append(" | ").append("%Erros").append(" | ").append("Acertos").append(" | ").append("Erros").append("\n");
+        sb.append("Classificador").append(" | ").append("Configuracao").append(" | ");
+        for (int i = 0; i < 10; i++) {
+            sb.append(i).append(" | ").append(i).append(" | " + "-" + " | ");
+        }
+
+        sb.append("Total").append("\n");
+
         for (Resultado resultado : resultados) {
             sb.append(resultado.toString()).append("\n");
         }
+
         try {
             printFile("analiseResultados.csv", sb.toString());
         } catch (IOException ex) {
@@ -130,6 +139,58 @@ public class GeraTabelaResultado {
                     }
                 }
             }
+            //System.out.println(resultado.getQtdeAcertos() + " " + resultado.getPorcentagemAcertos() + " " + resultado.getQtdeErros() + " " + resultado.getPorcentagemErros());
+            br.close();
+            fr.close();
+        }
+        return resultado;
+    }
+
+    public static Resultado getPredictions(String filePath, Resultado resultado) throws FileNotFoundException, IOException {
+        // StringBuilder linha = new StringBuilder();
+        int anterior = 0;
+        int atual = 0;
+
+        List<Fold> folds = new ArrayList<>();
+        String linha;
+        try (FileReader fr = new FileReader(filePath); BufferedReader br = new BufferedReader(fr)) {
+            while (br.ready()) {
+                linha = br.readLine();
+
+                if (linha.contains("error prediction")) {
+                    Fold fold = new Fold();
+                    while (br.ready()) {
+                        linha = br.readLine();
+                        if (!linha.equals("")) {
+                            String[] palavras = linha.split(" ");
+                            for (String palavra : palavras) {
+                                if (palavra.matches("[0-9]+")) {
+                                    atual = Integer.valueOf(palavra);
+                                    break;
+                                }
+                            }
+
+                            if (atual < anterior) {
+                                folds.add(fold);
+                                fold = new Fold();
+                                anterior = atual;
+                            } else {
+                                anterior = atual;
+                            }
+                            fold.addInstancia();
+                            if (linha.contains("+")) {
+                                fold.addErro();
+                            }
+                        } else {
+                            folds.add(fold);
+                            break;
+                        }
+                        
+                    }
+                }
+
+            }
+            resultado.setFolds(folds);
             //System.out.println(resultado.getQtdeAcertos() + " " + resultado.getPorcentagemAcertos() + " " + resultado.getQtdeErros() + " " + resultado.getPorcentagemErros());
             br.close();
             fr.close();

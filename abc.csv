@@ -1,8 +1,0 @@
-Classificador | Grams | Acertos | %Acertos | Erros | %Erros
-IB1 | 1gram | 568 | 54,0952 | 482 | 45,9048
-IBk | 1gram | 568 | 54,0952 | 482 | 45,9048
-KStar | 1gram | 473 | 45,0476 | 577 | 54,9524
-rules.PART | 1gram | 768 | 73,1429 | 282 | 26,8571
-SMO | 1gram | 934 | 88,9524 | 116 | 11,0476
-trees.J48 | 1gram | 764 | 72,7619 | 286 | 27,2381
-
