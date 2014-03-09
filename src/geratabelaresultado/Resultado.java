@@ -95,13 +95,13 @@ public class Resultado {
     public String toString() {
         //return getNomeClassificador() + " | " + getNomeTeste() + " | " + getPorcentagemAcertos() + " | " + getPorcentagemErros() + " | " + getQtdeAcertos() + " | " + getQtdeErros();
         StringBuilder resultado = new StringBuilder(getNomeClassificador() + " | " + getNomeTeste());
-
+        resultado.append(" | ").append(porcentagemAcertos); 
         for (Fold fold : folds) {
             resultado.append(" | ").append(fold.getAcertos()).append(" | ")
-                    .append(fold.getNrIntancias()).append(" | ").append("-");
+                    .append(fold.getNrIntancias()).append(" | ");
 
         }
-        resultado.append(" | ").append(porcentagemAcertos);
+        
         return resultado.toString();
     }
 

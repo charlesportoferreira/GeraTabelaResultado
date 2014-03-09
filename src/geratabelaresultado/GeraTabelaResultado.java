@@ -51,12 +51,19 @@ public class GeraTabelaResultado {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Classificador").append(" | ").append("Configuracao").append(" | ");
+        sb.append("Classificador").append(" | ").append("base")
+                .append(" | ").append("stoplist")
+                .append(" | ").append("ngram")
+                .append(" | ").append("MinMaxFreq")
+                .append(" | ").append("desvio")
+                .append(" | ").append("MinMaxFiles")
+                .append(" | ").append("Medida")
+                .append(" | ").append("Total").append(" | ");
         for (int i = 0; i < 10; i++) {
             sb.append(i).append(" | ").append(i).append(" | " + "-" + " | ");
         }
 
-        sb.append("Total").append("\n");
+        sb.append("\n");
 
         for (Resultado resultado : resultados) {
             sb.append(resultado.toString()).append("\n");
