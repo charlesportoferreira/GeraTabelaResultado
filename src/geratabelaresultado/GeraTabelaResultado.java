@@ -27,8 +27,16 @@ public class GeraTabelaResultado {
     public static List<String> fileNames = new ArrayList<>();
 
     public static void main(String[] args) {
+
         List<Resultado> resultados = new ArrayList<>();
         String diretorio = System.getProperty("user.dir");
+
+//        try {
+//            getNumeroAtributos(diretorio+ "/analiseResultados.csv");
+//        } catch (IOException ex) {
+//            Logger.getLogger(GeraTabelaResultado.class.getName()).log(Level.SEVERE, null, ex);
+//            System.exit(0);
+//        }
         //List<String> textos = fileTreePrinter(new File(diretorio), 0);
         fileTreePrinter(new File(diretorio), 0);
         System.out.println("**********************************************");
@@ -37,6 +45,14 @@ public class GeraTabelaResultado {
                 Resultado res = new Resultado();
                 res.setNomeClassificador(fileNames.get(i).split("_")[0]);
                 res.setNomeTeste(fileNames.get(i).split("_")[1].replace(".arff.txt", ""));
+                try {
+                    String pathArquivoLog = diretorio + "/logs/" + fileNames.get(i).split("_")[1].replace(".txt", "erro.txt");
+                    res.setNumeroAtributos(Integer.parseInt(getNumeroAtributos(pathArquivoLog)));
+                } catch (IOException ex) {
+                    Logger.getLogger(GeraTabelaResultado.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("\n**** Arquivo com atributos nao achado ****\n");
+                    System.exit(0);
+                }
                 try {
                     //res = getResultadosArquivo(filePaths.get(i), res);
                     res = getPredictions(filePaths.get(i), res);
@@ -58,6 +74,7 @@ public class GeraTabelaResultado {
                 .append(" | ").append("desvio")
                 .append(" | ").append("MinMaxFiles")
                 .append(" | ").append("Medida")
+                .append(" | ").append("Atributos")
                 .append(" | ").append("Total").append(" | ");
         for (int i = 0; i < 10; i++) {
             sb.append(i).append(" | ").append(i).append(" | " + "-" + " | ");
@@ -192,7 +209,7 @@ public class GeraTabelaResultado {
                             folds.add(fold);
                             break;
                         }
-                        
+
                     }
                 }
 
@@ -215,6 +232,29 @@ public class GeraTabelaResultado {
             bw.close();
             fw.close();
         }
+    }
+
+    public static String getNumeroAtributos(String filePath) throws FileNotFoundException, IOException {
+        //filePath = "C50.arfferro.txt";
+        String linha;
+        try {
+            try (BufferedReader in = new BufferedReader(new FileReader(filePath))) {
+                String str;
+                while (in.ready()) {
+                    str = in.readLine();
+                    if (str.contains("Number of Stems")) {
+                        str = str.replace("Number of Stems                                              ", "");
+                        return str;
+                    }
+                    //System.out.println("***Show****");
+                    //System.exit(0);
+                    //process(str);
+                }
+            }
+        } catch (IOException e) {
+        }
+
+        return "0";
     }
 
 }

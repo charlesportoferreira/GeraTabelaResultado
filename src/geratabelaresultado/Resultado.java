@@ -21,6 +21,17 @@ public class Resultado {
     private String porcentagemErros;
     private String porcentagemAcertos;
     private List<Fold> folds;
+    private int numeroAtributos;
+
+    public int getNumeroAtributos() {
+        return numeroAtributos;
+    }
+
+    public void setNumeroAtributos(int numeroAtributos) {
+        this.numeroAtributos = numeroAtributos;
+    }
+    
+    
 
     public Resultado() {
         this.folds = new ArrayList<>();
@@ -95,6 +106,7 @@ public class Resultado {
     public String toString() {
         //return getNomeClassificador() + " | " + getNomeTeste() + " | " + getPorcentagemAcertos() + " | " + getPorcentagemErros() + " | " + getQtdeAcertos() + " | " + getQtdeErros();
         StringBuilder resultado = new StringBuilder(getNomeClassificador() + " | " + getNomeTeste());
+         resultado.append(" | ").append(numeroAtributos);
         resultado.append(" | ").append(porcentagemAcertos); 
         for (Fold fold : folds) {
             resultado.append(" | ").append(fold.getAcertos()).append(" | ")
