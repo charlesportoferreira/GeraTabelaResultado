@@ -45,14 +45,9 @@ public class GeraTabelaResultado {
                 Resultado res = new Resultado();
                 res.setNomeClassificador(fileNames.get(i).split("_")[0]);
                 res.setNomeTeste(fileNames.get(i).split("_")[1].replace(".arff.txt", ""));
-                try {
-                    String pathArquivoLog = diretorio + "/logs/" + fileNames.get(i).split("_")[1].replace(".txt", "erro.txt");
-                    res.setNumeroAtributos(Integer.parseInt(getNumeroAtributos(pathArquivoLog)));
-                } catch (IOException ex) {
-                    Logger.getLogger(GeraTabelaResultado.class.getName()).log(Level.SEVERE, null, ex);
-                    System.out.println("\n**** Arquivo com atributos nao achado ****\n");
-                    System.exit(0);
-                }
+                String pathArquivoLog = diretorio + "/logs/" + fileNames.get(i).split("_")[1].replace(".txt", "erro.txt");
+                res.setNumeroAtributos(Integer.parseInt(getNumeroAtributos(pathArquivoLog)));
+                res.setMinMaxFreq(getMinMaxFreq(pathArquivoLog));
                 try {
                     //res = getResultadosArquivo(filePaths.get(i), res);
                     res = getPredictions(filePaths.get(i), res);
@@ -234,7 +229,7 @@ public class GeraTabelaResultado {
         }
     }
 
-    public static String getNumeroAtributos(String filePath) throws FileNotFoundException, IOException {
+    public static String getNumeroAtributos(String filePath) {
         //filePath = "C50.arfferro.txt";
         String linha;
         try {
@@ -245,6 +240,37 @@ public class GeraTabelaResultado {
                     if (str.contains("Number of Stems")) {
                         str = str.replace("Number of Stems                                              ", "");
                         return str;
+                    }
+                    //System.out.println("***Show****");
+                    //System.exit(0);
+                    //process(str);
+                }
+            }
+        } catch (IOException e) {
+        }
+
+        return "0";
+    }
+
+    public static String getMinMaxFreq(String filePath) {
+        //filePath = "C50.arfferro.txt";
+        String linha;
+        String min = "";
+        String max = "";
+        try {
+            try (BufferedReader in = new BufferedReader(new FileReader(filePath))) {
+                String str;
+                while (in.ready()) {
+                    str = in.readLine();
+                    if (str.contains("std_dev min")) {
+                        str = str.replace("Number of Stems                                              ", "");
+                        min = str;
+                        // return str;
+                    }
+                    if (str.contains("max freq")) {
+                        str = str.replace("Number of Stems                                              ", "");
+                        max = str;
+                        return min + "-" + max;
                     }
                     //System.out.println("***Show****");
                     //System.exit(0);

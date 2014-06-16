@@ -30,8 +30,6 @@ public class Resultado {
     public void setNumeroAtributos(int numeroAtributos) {
         this.numeroAtributos = numeroAtributos;
     }
-    
-    
 
     public Resultado() {
         this.folds = new ArrayList<>();
@@ -102,18 +100,24 @@ public class Resultado {
         this.porcentagemAcertos = porcentagemAcertos;
     }
 
+    public void setMinMaxFreq(String freq) {
+        if (this.nomeTeste.contains("0-0minFreq")) {
+            nomeTeste = nomeTeste.replace("0-0minFreq", freq + "minFreq");
+        }
+    }
+
     @Override
     public String toString() {
         //return getNomeClassificador() + " | " + getNomeTeste() + " | " + getPorcentagemAcertos() + " | " + getPorcentagemErros() + " | " + getQtdeAcertos() + " | " + getQtdeErros();
         StringBuilder resultado = new StringBuilder(getNomeClassificador() + " | " + getNomeTeste());
-         resultado.append(" | ").append(numeroAtributos);
-        resultado.append(" | ").append(porcentagemAcertos); 
+        resultado.append(" | ").append(numeroAtributos);
+        resultado.append(" | ").append(porcentagemAcertos);
         for (Fold fold : folds) {
             resultado.append(" | ").append(fold.getAcertos()).append(" | ")
                     .append(fold.getNrIntancias()).append(" | ");
 
         }
-        
+
         return resultado.toString();
     }
 
