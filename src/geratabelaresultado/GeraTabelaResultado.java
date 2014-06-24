@@ -86,6 +86,10 @@ public class GeraTabelaResultado {
         } catch (IOException ex) {
             Logger.getLogger(GeraTabelaResultado.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        SendMail sendMail = new SendMail();
+        sendMail.sendMail("charlesportoferreira@gmail.com", "charlesportoferreira@gmail.com", "resultados", "Resultados dos experimentos");
+        
     }
 
     public static List<String> fileTreePrinter(File initialPath, int initialDepth) {
