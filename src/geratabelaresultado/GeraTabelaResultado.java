@@ -46,7 +46,7 @@ public class GeraTabelaResultado {
                 res.setNomeClassificador(fileNames.get(i).split("_")[0]);
                 res.setNomeTeste(fileNames.get(i).split("_")[1].replace(".arff.txt", ""));
                 String pathArquivoLog = diretorio + "/logs/" + fileNames.get(i).split("_")[1].replace(".txt", "erro.txt");
-                res.setNumeroAtributos(Integer.parseInt(getNumeroAtributos(pathArquivoLog)));
+                res.setNumeroAtributos((getNumeroAtributos(pathArquivoLog)));
                 res.setMinMaxFreq(getMinMaxFreq(pathArquivoLog));
                 try {
                     //res = getResultadosArquivo(filePaths.get(i), res);
@@ -86,10 +86,10 @@ public class GeraTabelaResultado {
         } catch (IOException ex) {
             Logger.getLogger(GeraTabelaResultado.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         SendMail sendMail = new SendMail();
         sendMail.sendMail("charlesportoferreira@gmail.com", "charlesportoferreira@gmail.com", "resultados", "Resultados dos experimentos");
-        
+
     }
 
     public static List<String> fileTreePrinter(File initialPath, int initialDepth) {
@@ -233,9 +233,10 @@ public class GeraTabelaResultado {
         }
     }
 
-    public static String getNumeroAtributos(String filePath) {
+    public static int getNumeroAtributos(String filePath) {
         //filePath = "C50.arfferro.txt";
         String linha;
+        int numeroAtributos = 0;
         try {
             try (BufferedReader in = new BufferedReader(new FileReader(filePath))) {
                 String str;
@@ -243,7 +244,8 @@ public class GeraTabelaResultado {
                     str = in.readLine();
                     if (str.contains("Number of Stems")) {
                         str = str.replace("Number of Stems                                              ", "");
-                        return str;
+                        numeroAtributos += Integer.parseInt(str);
+                        //return str;
                     }
                     //System.out.println("***Show****");
                     //System.exit(0);
@@ -251,9 +253,10 @@ public class GeraTabelaResultado {
                 }
             }
         } catch (IOException e) {
+            //System.out.println(e)
         }
 
-        return "0";
+        return numeroAtributos;
     }
 
     public static String getMinMaxFreq(String filePath) {
