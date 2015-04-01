@@ -129,7 +129,7 @@ public class SendMail {
              *  2 - seu nome de usuario do gmail
              *  3 - sua senha do gmail
              */
-            tr.connect(mailSMTPServer, "charlesportoferreira@gmail.com", "cHpf871170");
+            tr.connect(mailSMTPServer, "charlesportoferreira@gmail.com", "vc_nao_devia_olhar");
             msg.saveChanges(); // don't forget this
             //envio da mensagem
             tr.sendMessage(msg, msg.getAllRecipients());
